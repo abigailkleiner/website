@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abigail Kleiner - Writer, Producer, Director</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            background-color: #fafafa;
+            color: #000;
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 40px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        .nav-left {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .nav-right {
+            display: flex;
+            gap: 30px;
+            font-size: 14px;
+        }
+
+        .nav-right a {
+            color: #666;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-right a:hover {
+            color: #000;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            text-align: center;
+            background: linear-gradient(180deg, #fff 0%, #fafafa 100%);
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 300;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .hero-role {
+            background: linear-gradient(45deg, #6366f1, #8b5cf6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 600;
+        }
+
+        .hero-location {
+            color: #999;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+        /* Projects Grid */
+        .projects {
+            padding: 80px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 60px 40px;
+        }
+
+        .project-card {
+            background: #fff;
+            border: 1px solid #eee;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 300px;
+            position: relative;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Different gradient backgrounds for different project types */
+        .project-image.series {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .project-image.film {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .project-image.documentary {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .project-image.limited {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .project-image.short {
+            background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+        }
+
+        .project-image::after {
+            content: attr(data-title);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 36px;
+            font-weight: 300;
+            text-align: center;
+            width: 80%;
+            font-style: italic;
+            opacity: 0.9;
+            letter-spacing: -1px;
+            line-height: 1.2;
+        }
+
+        .project-info {
+            padding: 30px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .project-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .project-subtitle {
+            font-size: 28px;
+            font-weight: 300;
+            margin-bottom: 30px;
+            line-height: 1.2;
+        }
+
+        .project-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 30px 30px;
+        }
+
+        .project-year {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .project-roles {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .role-tag {
+            background: #e0e7ff;
+            color: #4338ca;
+            padding: 6px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            border-radius: 4px;
+        }
+
+        .role-tag.writing {
+            background: #fce7f3;
+            color: #be185d;
+        }
+
+        .role-tag.producing {
+            background: #e0f2fe;
+            color: #0369a1;
+        }
+
+        .role-tag.directing {
+            background: #f3e8ff;
+            color: #7c3aed;
+        }
+
+        /* Load More Button */
+        .load-more {
+            text-align: center;
+            margin-top: 80px;
+        }
+
+        .load-more button {
+            background: #000;
+            border: none;
+            color: #fff;
+            padding: 15px 40px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+
+        .load-more button:hover {
+            background: #333;
+            transform: scale(1.05);
+        }
+
+        /* Studio Section */
+        .studio {
+            padding: 120px 40px;
+            text-align: center;
+            background: #fff;
+            border-top: 1px solid #eee;
+        }
+
+        .studio h2 {
+            font-size: 36px;
+            font-weight: 300;
+            margin-bottom: 20px;
+        }
+
+        .studio-links {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 30px;
+        }
+
+        .studio-links a {
+            color: #000;
+            text-decoration: none;
+            font-size: 18px;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .studio-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #6366f1;
+            transition: width 0.3s;
+        }
+
+        .studio-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Contact */
+        .contact {
+            padding: 80px 40px;
+            text-align: center;
+            background: #fafafa;
+        }
+
+        .contact p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .contact a {
+            color: #6366f1;
+            text-decoration: none;
+            font-size: 20px;
+            transition: color 0.3s;
+        }
+
+        .contact a:hover {
+            color: #4338ca;
+        }
+
+        /* Footer */
+        footer {
+            padding: 40px;
+            text-align: center;
+            background: #fafafa;
+            border-top: 1px solid #eee;
+        }
+
+        footer a {
+            color: #999;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        footer a:hover {
+            color: #000;
+        }
+
+        /* Hidden projects */
+        .more-projects {
+            display: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                padding: 20px;
+            }
+
+            .nav-right {
+                gap: 20px;
+                font-size: 12px;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .projects {
+                padding: 40px 20px;
+            }
+
+            .project-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .studio-links {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-left">Abigail Kleiner</div>
+        <div class="nav-right">
+            <a href="#work">Work</a>
+            <span style="color: #ddd;">/</span>
+            <a href="#studio">Studio</a>
+            <span style="color: #ddd;">/</span>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div>
+            <h1>Abigail Kleiner is a<br><span class="hero-role">writer, producer and director</span></h1>
+            <p class="hero-location">from Westport, Connecticut</p>
+        </div>
+    </section>
+
+    <!-- Projects -->
+    <section class="projects" id="work">
+        <div class="project-grid">
+            <!-- Project 1 -->
+            <div class="project-card">
+                <div class="project-image series" data-title="BUTV10 - Shadows"></div>
+                <div class="project-info">
+                    <h3 class="project-title">BUTV10 - Shadows</h3>
+                    <p class="project-subtitle">Season 33, Episode 2: Food For Thought</p>
+                </div>
+                <div class="project-meta">
+                    <span class="project-year">2025</span>
+                    <div class="project-roles">
+<!--                         <span class="role-tag producing">Producing</span>
+                        <span class="role-tag writing">Writing</span> -->
+                        <span class="role-tag directing">Directing</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 2 -->
+            <div class="project-card">
+                <div class="project-image film" data-title="The Stories We Tell Ourselves"></div>
+                <div class="project-info">
+                    <h3 class="project-title">The Stories We Tell Ourselves</h3>
+                    <p class="project-subtitle">Drama Short</p>
+                </div>
+                <div class="project-meta">
+                    <span class="project-year">2024</span>
+                    <div class="project-roles">
+                        <span class="role-tag directing">Assistant Director</span>
+                        <span class="role-tag writing">Script Supervisor</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 3 -->
+            <div class="project-card">
+                <div class="project-image limited" data-title="Glass Houses"></div>
+                <div class="project-info">
+                    <h3 class="project-title">Glass Houses</h3>
+                    <p class="project-subtitle">Drama Short</p>
+                </div>
+                <div class="project-meta">
+                    <span class="project-year">2025</span>
+                    <div class="project-roles">
+                        <span class="role-tag producing">Producer</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 4 -->
+            <div class="project-card">
+                <div class="project-image series" data-title="Bonnabellie"></div>
+                <div class="project-info">
+                    <h3 class="project-title">Bonnabellie</h3>
+                    <p class="project-subtitle">Drama Short</p>
+                </div>
+                <div class="project-meta">
+                    <span class="project-year">2025</span>
+                    <div class="project-roles">
+<!--                         <span class="role-tag producing">Producing</span>
+                        <span class="role-tag writing">Writing</span> -->
+                        <span class="role-tag directing">Director</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 5 -->
+            <div class="project-card">
+                <div class="project-image documentary" data-title="Speak My Language"></div>
+                <div class="project-info">
+                    <h3 class="project-title">Speak My Language</h3>
+                    <p class="project-subtitle">Drama Short</p>
+                </div>
+                <div class="project-meta">
+                    <span class="project-year">2024</span>
+                    <div class="project-roles">
+                        <span class="role-tag writing">Script Supervisor</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 6 -->
+            <div class="project-card">
+                <div class="project-image film" data-title="The Acting Gym"></div>
+                <div class="project-info">
+                    <h3 class="project-title">The Acting Gym</h3>
+                    <p class="project-subtitle">Independent Film Project</p>
+                </div>
+                <div class="project-meta">
+                    <span class="project-year">2018 - 2021</span>
+                    <div class="project-roles">
+                        <span class="role-tag writing">Writing</span>
+                        <span class="role-tag producing">Producing</span>
+                        <span class="role-tag directing">Directing</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hidden projects that load on click -->
+            <div class="more-projects">
+                <!-- Project 7 -->
+<!--                 <div class="project-card">
+                    <div class="project-image series" data-title="City of Shadows"></div>
+                    <div class="project-info">
+                        <h3 class="project-title">City of Shadows</h3>
+                        <p class="project-subtitle">Season 1</p>
+                    </div>
+                    <div class="project-meta">
+                        <span class="project-year">2023</span>
+                        <div class="project-roles">
+                            <span class="role-tag producing">Producing</span>
+                            <span class="role-tag writing">Writing</span>
+                            <span class="role-tag directing">Directing</span>
+                        </div>
+                    </div>
+                </div> -->
+
+                <!-- Project 8 -->
+            </div>
+        </div>
+
+        <div class="load-more">
+            <button onclick="loadMore()">Load more</button>
+        </div>
+    </section>
+
+    <!-- Studio Section -->
+    <section class="studio" id="studio">
+        <h2>Creating stories at</h2>
+        <div class="studio-links">
+            <a href="#">Horizon Pictures</a>
+            <span style="color: #ccc;">and</span>
+            <a href="#">Silver Screen Studios</a>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <p>Feel free to reach out via</p>
+        <a href="mailto:akleiner@bu.edu">akleiner@bu.edu</a>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <a href="#">Imprint</a>
+    </footer>
+
+    <script>
+        function loadMore() {
+            const moreProjects = document.querySelector('.more-projects');
+            const projectGrid = document.querySelector('.project-grid');
+            const loadMoreBtn = document.querySelector('.load-more button');
+            
+            // Move all hidden projects to the main grid
+            const hiddenProjects = moreProjects.querySelectorAll('.project-card');
+            hiddenProjects.forEach(project => {
+                projectGrid.appendChild(project);
+            });
+            
+            // Hide the load more button
+            loadMoreBtn.style.display = 'none';
+        }
+
+        // Add smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add subtle parallax effect to hero
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            hero.style.transform = `translateY(${scrolled * 0.3}px)`;
+        });
+    </script>
+</body>
+</html>
